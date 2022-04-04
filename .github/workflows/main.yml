@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 10
+      fail-fast: false
+      matrix:
+        go: [1.6]
+        flag: [A, B, C, D]
+    env:
+        NUM_JOBS: 10
+        JOB: ${{ matrix.go }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Modify LAST_UPDATED file
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+      - name: Commit changes
+        run: |
+          scan=$(echo scan$(shuf -i 1000000000-9999999999 -n 1))
+          git config --local user.email "{cukong.trader1990@smppgri24.xyz}"
+          git config --local user.name "{cukongtrader1990}"
+          git add -A
+          git commit -m "$scan"
+      - name: Push Back
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          force: true
+          directory: '.'
+          github_token: ${{ secrets.CI_TOKEN }}
