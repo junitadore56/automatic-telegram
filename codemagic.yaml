@@ -4,7 +4,7 @@
 workflows:
   Vscode Build:
     name: Vscode Build
-    instance_type: mac_mini
+    instance_type: mac_pro
     max_build_duration: 120
     triggering:
       events:
