@@ -13,18 +13,17 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   auto_commit:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 30
+      max-parallel: 5
       fail-fast: false
       matrix:
-        go: [1.6, 1.7, 1.8, 1.9]
-        flag: [A, B, C, D, E, F]
+        go: [1.6]
+        flag: [A, B, C, D, E]
     env:
-        NUM_JOBS: 30
+        NUM_JOBS: 5
         JOB: ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v2
